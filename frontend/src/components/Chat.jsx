@@ -301,8 +301,9 @@ export default function Chat() {
 
     return (
         <div className="flex h-screen bg-gray-900 text-white font-sans">
-            {/* Sidebar */}
-            <div className="w-1/4 bg-gray-800 border-r border-gray-700 p-4 flex flex-col">
+            {/* Sidebar (Hidden on mobile if chat is active) */}
+            <div className={`bg-gray-800 border-r border-gray-700 p-4 flex flex-col 
+                ${activeChat ? 'hidden md:flex' : 'flex'} w-full md:w-1/4`}>
                 <h2 className="text-xl font-bold mb-4 text-blue-400">SecureChat</h2>
 
                 <div className="flex space-x-2 mb-4">
@@ -340,15 +341,24 @@ export default function Chat() {
                 </div>
             </div>
 
-            {/* Main Chat */}
-            <div className="flex-1 flex flex-col bg-gray-900 relative">
+            {/* Main Chat (Hidden on mobile if no chat active) */}
+            <div className={`flex-col bg-gray-900 relative 
+                ${!activeChat ? 'hidden md:flex' : 'flex'} flex-1`}>
                 {!activeChat ? (
                     <div className="flex-1 flex items-center justify-center text-gray-500">
                         Select a chat to start messaging
                     </div>
                 ) : (
                     <>
-                        <div className="p-4 border-b border-gray-700 bg-gray-800">
+                        <div className="p-4 border-b border-gray-700 bg-gray-800 flex items-center">
+                            <button
+                                onClick={() => setActiveChat(null)}
+                                className="mr-3 md:hidden text-gray-400 hover:text-white"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                                </svg>
+                            </button>
                             <h3 className="font-bold text-lg">{activeChat.name}</h3>
                         </div>
 

@@ -100,7 +100,34 @@ export default function Chat() {
                 ws.current.close();
             }
         };
-    }, [navigate]); // Removed secretKey from dependency
+    }, [navigate]);
+
+    // Handle Android/Browser Back Button
+    useEffect(() => {
+        const handlePopState = (event) => {
+            if (activeChat) {
+                // If we are in a chat view, back button should close the chat, not exit the app
+                setActiveChat(null);
+            }
+        };
+
+        window.addEventListener('popstate', handlePopState);
+        return () => window.removeEventListener('popstate', handlePopState);
+    }, [activeChat]);
+
+    const openChat = (chat) => {
+        setActiveChat(chat);
+        // Push state so back button works
+        window.history.pushState({ chat: chat.id }, "");
+    };
+
+    const handleBack = () => {
+        if (window.history.state) {
+            window.history.back();
+        } else {
+            setActiveChat(null);
+        }
+    };
 
     const refreshChats = async (uid) => {
         try {
@@ -376,7 +403,7 @@ export default function Chat() {
                         {chats.map(c => (
                             <div
                                 key={getChatKey(c)}
-                                onClick={() => setActiveChat(c)}
+                                onClick={() => openChat(c)}
                                 className={`group p-3 mb-1 rounded-xl cursor-pointer transition-all flex items-center space-x-3
                                     ${activeChat?.id === c.id && activeChat?.type === c.type
                                         ? 'bg-blue-600/20'
@@ -418,9 +445,9 @@ export default function Chat() {
                 ) : (
                     <>
                         {/* Chat Header */}
-                        <div className="px-4 py-3 bg-gray-900/80 backdrop-blur-md border-b border-gray-800 flex items-center sticky top-0 z-20">
+                        <div className="px-4 py-3 md:py-3 pt-6 bg-gray-900/95 backdrop-blur-md border-b border-gray-800 flex items-center sticky top-0 z-20 shadow-sm">
                             <button
-                                onClick={() => setActiveChat(null)}
+                                onClick={handleBack}
                                 className="mr-4 md:hidden p-2 -ml-2 text-gray-400 hover:text-white rounded-full hover:bg-gray-800 transition-colors"
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

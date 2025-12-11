@@ -300,97 +300,161 @@ export default function Chat() {
     }
 
     return (
-        <div className="flex h-screen bg-gray-900 text-white font-sans">
-            {/* Sidebar (Hidden on mobile if chat is active) */}
-            <div className={`bg-gray-800 border-r border-gray-700 p-4 flex flex-col 
-                ${activeChat ? 'hidden md:flex' : 'flex'} w-full md:w-1/4`}>
-                <h2 className="text-xl font-bold mb-4 text-blue-400">SecureChat</h2>
+    // Generate random color for avatar based on name
+    const getAvatarColor = (name) => {
+            const colors = ['bg-red-500', 'bg-blue-500', 'bg-green-500', 'bg-yellow-500', 'bg-purple-500', 'bg-pink-500', 'bg-indigo-500'];
+            let hash = 0;
+            for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+            return colors[Math.abs(hash) % colors.length];
+        };
 
-                <div className="flex space-x-2 mb-4">
-                    <button onClick={handleAddContact} className="flex-1 bg-gray-700 hover:bg-gray-600 text-xs py-2 rounded">
-                        + Contact
-                    </button>
-                    <button onClick={handleCreateGroup} className="flex-1 bg-gray-700 hover:bg-gray-600 text-xs py-2 rounded">
-                        + Group
-                    </button>
+    return (
+        <div className="flex h-[100dvh] bg-gray-900 text-white font-sans overflow-hidden">
+            {/* Sidebar (List View) */}
+            <div className={`flex-col h-full bg-gray-900 border-r border-gray-800 
+                ${activeChat ? 'hidden md:flex' : 'flex'} w-full md:w-80 lg:w-96 transition-all duration-300`}>
+
+                {/* Header */}
+                <div className="p-4 bg-gray-900 sticky top-0 z-10 border-b border-gray-800">
+                    <div className="flex justify-between items-center mb-4">
+                        <h2 className="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">Messages</h2>
+                        <button onClick={() => { localStorage.clear(); navigate('/login') }} className="text-gray-400 text-sm hover:text-white">Logout</button>
+                    </div>
+                    {/* User Info & Secret Key Toggle */}
+                    <div className="text-xs text-gray-400 mb-2 truncate">
+                        Logged in as <span className="text-white font-medium">{user?.username}</span>
+                    </div>
+                    <div className="relative">
+                        <input
+                            type="password"
+                            placeholder="Secret Key"
+                            value={secretKey}
+                            onChange={e => setSecretKey(e.target.value)}
+                            className="w-full bg-gray-800 p-2 rounded text-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        />
+                    </div>
                 </div>
 
-                <div className="space-y-2 overflow-y-auto flex-1">
-                    {chats.map(c => (
-                        <div
-                            key={getChatKey(c)}
-                            onClick={() => setActiveChat(c)}
-                            className={`p-3 rounded-lg cursor-pointer transition-all border-l-4 ${activeChat?.id === c.id && activeChat?.type === c.type
-                                ? 'bg-gray-700 border-blue-500'
-                                : 'bg-transparent border-transparent hover:bg-gray-700'
-                                }`}
-                        >
-                            <h3 className="font-semibold">{c.name}</h3>
-                            <p className="text-xs text-gray-400 capitalize">{c.type}</p>
-                        </div>
-                    ))}
-                </div>
+                {/* Chat List */}
+                <div className="flex-1 overflow-y-auto custom-scrollbar">
+                    {/* Actions */}
+                    <div className="flex p-2 space-x-2 sticky top-0 bg-gray-900 z-10 border-b border-gray-800">
+                        <button onClick={handleAddContact} className="flex-1 bg-gray-800 hover:bg-gray-700 p-2 rounded-lg flex flex-col items-center justify-center space-y-1">
+                            <div className="bg-blue-500/10 p-2 rounded-full"><span className="text-blue-400 text-lg">+</span></div>
+                            <span className="text-xs text-gray-400">New Chat</span>
+                        </button>
+                        <button onClick={handleCreateGroup} className="flex-1 bg-gray-800 hover:bg-gray-700 p-2 rounded-lg flex flex-col items-center justify-center space-y-1">
+                            <div className="bg-purple-500/10 p-2 rounded-full"><span className="text-purple-400 text-lg">#</span></div>
+                            <span className="text-xs text-gray-400">New Group</span>
+                        </button>
+                    </div>
 
-                <div className="mt-4 border-t border-gray-700 pt-4">
-                    <label className="text-xs text-gray-400 uppercase font-semibold">Secret Key</label>
-                    <input type="password" value={secretKey} onChange={e => setSecretKey(e.target.value)} className="w-full bg-gray-900 mt-1 p-1 rounded text-sm" />
-                </div>
-                <div className="mt-4 flex items-center justify-between">
-                    <span className="text-sm font-bold">{user?.username}</span>
-                    <button onClick={() => { localStorage.clear(); navigate('/login') }} className="text-red-400 text-xs">Logout</button>
+                    <div className="px-2 pb-20 md:pb-0">
+                        {chats.map(c => (
+                            <div
+                                key={getChatKey(c)}
+                                onClick={() => setActiveChat(c)}
+                                className={`group p-3 mb-1 rounded-xl cursor-pointer transition-all flex items-center space-x-3
+                                    ${activeChat?.id === c.id && activeChat?.type === c.type
+                                        ? 'bg-blue-600/20'
+                                        : 'hover:bg-gray-800'
+                                    }`}
+                            >
+                                {/* Avatar */}
+                                <div className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold text-white shadow-lg ${getAvatarColor(c.name)}`}>
+                                    {c.name.substring(0, 2).toUpperCase()}
+                                </div>
+
+                                <div className="flex-1 min-w-0">
+                                    <div className="flex justify-between items-baseline">
+                                        <h3 className="font-semibold text-white truncate">{c.name}</h3>
+                                        {/* Optional: Time or unread badge could go here */}
+                                    </div>
+                                    <p className="text-sm text-gray-400 truncate">
+                                        {c.type === 'group' ? 'Group Chat' : 'Private Chat'}
+                                    </p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
 
-            {/* Main Chat (Hidden on mobile if no chat active) */}
-            <div className={`flex-col bg-gray-900 relative 
-                ${!activeChat ? 'hidden md:flex' : 'flex'} flex-1`}>
+            {/* Chat View (Detail View) */}
+            <div className={`flex-col h-full relative flex-1 bg-gray-950
+                ${!activeChat ? 'hidden md:flex' : 'flex'} w-full`}>
+
                 {!activeChat ? (
-                    <div className="flex-1 flex items-center justify-center text-gray-500">
-                        Select a chat to start messaging
+                    <div className="flex-1 flex flex-col items-center justify-center text-gray-500 p-4 text-center">
+                        <div className="w-24 h-24 bg-gray-800 rounded-full flex items-center justify-center mb-4 animate-pulse">
+                            <span className="text-4xl">💬</span>
+                        </div>
+                        <h3 className="text-xl font-medium text-gray-300">Select a chat to start messaging</h3>
+                        <p className="text-sm mt-2 max-w-xs">End-to-End Encrypted. Neither we nor Google can read your messages.</p>
                     </div>
                 ) : (
                     <>
-                        <div className="p-4 border-b border-gray-700 bg-gray-800 flex items-center">
+                        {/* Chat Header */}
+                        <div className="px-4 py-3 bg-gray-900/80 backdrop-blur-md border-b border-gray-800 flex items-center sticky top-0 z-20">
                             <button
                                 onClick={() => setActiveChat(null)}
-                                className="mr-3 md:hidden text-gray-400 hover:text-white"
+                                className="mr-4 md:hidden p-2 -ml-2 text-gray-400 hover:text-white rounded-full hover:bg-gray-800 transition-colors"
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                                 </svg>
                             </button>
-                            <h3 className="font-bold text-lg">{activeChat.name}</h3>
+
+                            <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white mr-3 ${getAvatarColor(activeChat.name)}`}>
+                                {activeChat.name.substring(0, 2).toUpperCase()}
+                            </div>
+
+                            <div>
+                                <h3 className="font-bold text-white">{activeChat.name}</h3>
+                                <p className="text-xs text-blue-400 flex items-center">
+                                    <span className="w-1.5 h-1.5 bg-green-500 rounded-full mr-1"></span>
+                                    Encrypted Connection
+                                </p>
+                            </div>
                         </div>
 
-                        <div className="flex-1 p-6 overflow-y-auto space-y-4">
+                        {/* Messages Area */}
+                        <div className="flex-1 p-4 overflow-y-auto space-y-4 custom-scrollbar bg-gray-950/50">
                             {(messages[getChatKey(activeChat)] || []).map((m, i) => {
                                 const fileType = m.isFile ? getFileType(m.fileData?.fileName) : null;
                                 return (
-                                    <div key={i} className={`flex ${m.isMine ? 'justify-end' : 'justify-start'}`}>
-                                        <div className={`p-3 rounded-lg max-w-lg shadow-md ${m.isMine ? 'bg-blue-600' : 'bg-gray-700'}`}>
-                                            {!m.isMine && <p className="text-xs text-gray-300 font-bold mb-1">{m.sender}</p>}
+                                    <div key={i} className={`flex ${m.isMine ? 'justify-end' : 'justify-start'} animate-fade-in-up`}>
+                                        <div className={`p-3 rounded-2xl max-w-[85%] md:max-w-lg shadow-sm backdrop-blur-sm relative group
+                                            ${m.isMine
+                                                ? 'bg-blue-600 text-white rounded-br-none'
+                                                : 'bg-gray-800 text-gray-100 rounded-bl-none'}`}>
+
+                                            {!m.isMine && <p className={`text-[10px] font-bold mb-1 opacity-75 ${getAvatarColor(m.sender).replace('bg-', 'text-')}`}>{m.sender}</p>}
 
                                             {m.isFile ? (
                                                 <div className="space-y-2">
-                                                    <p className="text-sm italic">{m.fileData?.fileName}</p>
+                                                    <div className="flex items-center space-x-2 bg-black/20 p-2 rounded-lg">
+                                                        <div className="p-2 bg-white/10 rounded">📄</div>
+                                                        <p className="text-sm truncate max-w-[150px]">{m.fileData?.fileName}</p>
+                                                    </div>
 
                                                     {m.previewUrl ? (
-                                                        <div className="mt-2">
-                                                            {fileType === 'image' && <img src={m.previewUrl} alt="Encrypted Media" className="max-w-xs rounded" />}
-                                                            {fileType === 'video' && <video src={m.previewUrl} controls className="max-w-xs rounded" />}
+                                                        <div className="mt-2 rounded-lg overflow-hidden bg-black/30">
+                                                            {fileType === 'image' && <img src={m.previewUrl} alt="Encrypted Media" className="w-full h-auto max-h-60 object-contain" />}
+                                                            {fileType === 'video' && <video src={m.previewUrl} controls className="w-full max-h-60" />}
                                                             {fileType === 'audio' && <audio src={m.previewUrl} controls className="w-full" />}
                                                         </div>
                                                     ) : (
-                                                        <div className="flex space-x-2">
-                                                            <button onClick={() => handleDownload(m)} className="mt-2 text-xs bg-gray-900 px-2 py-1 rounded">Download</button>
+                                                        <div className="flex space-x-2 mt-1">
+                                                            <button onClick={() => handleDownload(m)} className="text-xs bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-full transition-colors">Download</button>
                                                             {['image', 'video', 'audio'].includes(fileType) && (
-                                                                <button onClick={() => handleViewMedia(m, i)} className="mt-2 text-xs bg-green-700 px-2 py-1 rounded">View Media</button>
+                                                                <button onClick={() => handleViewMedia(m, i)} className="text-xs bg-green-500/20 text-green-300 hover:bg-green-500/30 px-3 py-1.5 rounded-full transition-colors">View Media</button>
                                                             )}
                                                         </div>
                                                     )}
                                                 </div>
                                             ) : (
-                                                <p>{m.text}</p>
+                                                <p className="whitespace-pre-wrap break-words text-sm md:text-base leading-relaxed">{m.text}</p>
                                             )}
                                         </div>
                                     </div>
@@ -399,18 +463,34 @@ export default function Chat() {
                             <div ref={chatEndRef} />
                         </div>
 
-                        <div className="p-4 bg-gray-800 border-t border-gray-700 flex space-x-2 items-center">
+                        {/* Input Area */}
+                        <div className="p-3 bg-gray-900 border-t border-gray-800 flex items-end space-x-2 pb-safe sticky bottom-0 z-20">
                             <input type="file" ref={fileInputRef} className="hidden" onChange={handleFileUpload} />
-                            <button onClick={() => fileInputRef.current.click()} className="p-2 bg-gray-700 text-gray-300 rounded hover:bg-gray-600">📎</button>
-                            <input
-                                type="text"
-                                className="flex-1 bg-gray-700 text-white p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                placeholder={`Message ${activeChat.name}...`}
-                                value={input}
-                                onChange={(e) => setInput(e.target.value)}
-                                onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
-                            />
-                            <button onClick={sendMessage} className="bg-blue-600 px-6 py-2 rounded-lg font-semibold">Send</button>
+                            <button onClick={() => fileInputRef.current.click()} className="p-3 text-gray-400 hover:text-blue-400 rounded-full hover:bg-gray-800 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
+                                </svg>
+                            </button>
+                            <div className="flex-1 bg-gray-800 rounded-2xl flex items-center px-4 py-2 focus-within:ring-2 focus-within:ring-blue-500/50 transition-all">
+                                <input
+                                    type="text"
+                                    className="flex-1 bg-transparent text-white border-none focus:ring-0 placeholder-gray-500 py-1 max-h-32 overflow-y-auto"
+                                    placeholder="Message..."
+                                    value={input}
+                                    onChange={(e) => setInput(e.target.value)}
+                                    onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
+                                />
+                            </div>
+                            <button
+                                onClick={sendMessage}
+                                disabled={!input.trim()}
+                                className={`p-3 rounded-full transition-all duration-200 transform hover:scale-105 active:scale-95
+                                    ${input.trim() ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30' : 'bg-gray-800 text-gray-600 cursor-not-allowed'}`}
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                                </svg>
+                            </button>
                         </div>
                     </>
                 )}

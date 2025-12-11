@@ -9,15 +9,22 @@ services:
     env_file:
       - ./backend/.env
     volumes:
-      # Mount database so it persists on host (optional but recommended)
-      - ./backend/database.db:/app/database.db
+      - ./backend/data:/app/data
     restart: always
+    networks:
+      - app-network
 
   frontend:
     build: ./frontend
     container_name: securechat_frontend
     ports:
-      - "3001:80"  # Map host port 3001 to container port 80 (nginx)
+      - "3001:80"
     depends_on:
       - backend
     restart: always
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

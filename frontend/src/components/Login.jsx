@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react'; // Added useEffect import
-import { api } from '../lib/api';
+import { api, API_URL } from '../lib/api';
 
 export default function Login() {
     const navigate = useNavigate();
@@ -21,7 +21,7 @@ export default function Login() {
 
     const handleLogin = () => {
         // Redirect to Backend Login logic
-        window.location.href = `${api.API_URL}/auth/login`;
+        window.location.href = `${API_URL}/auth/login`;
     };
 
     return (

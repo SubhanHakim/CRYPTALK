@@ -16,7 +16,16 @@ app = FastAPI(title="SecureChatAG", description="E2EE Messaging App Backend")
 
 # Required for Authlib state storage
 # Better to use a stable secret from env, fallback to random if missing (for dev)
-app.add_middleware(SessionMiddleware, secret_key=os.getenv("SECRET_KEY", "some-random-string"))
+# Determine if running in production/secure mode to set appropriate cookie flags
+domain = os.getenv("DOMAIN", "")
+is_secure = domain.startswith("https")
+
+app.add_middleware(
+    SessionMiddleware, 
+    secret_key=os.getenv("SECRET_KEY", "some-random-string"),
+    https_only=is_secure,
+    same_site="lax"
+)
 
 app.add_middleware(
     CORSMiddleware,

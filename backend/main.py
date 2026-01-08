@@ -100,8 +100,8 @@ async def auth_callback(request: Request, session: Session = Depends(get_session
     access_token = create_access_token(data={"sub": user.username, "id": user.id})
     
     # Redirect to Frontend with Token
-    # Use DOMAIN env var if available, otherwise default to localhost:3001 (which we set in docker)
-    domain = os.getenv('DOMAIN', 'http://localhost:3001')
+    # Use FRONTEND_URL env var if available, otherwise default to localhost:5173
+    frontend_base = os.getenv('FRONTEND_URL', 'http://localhost:5173')
     from urllib.parse import urlencode
     
     # Construct query params safely
@@ -111,7 +111,7 @@ async def auth_callback(request: Request, session: Session = Depends(get_session
         "uid": str(user.id)
     }
     query_string = urlencode(params)
-    frontend_url = f"{domain}/login?{query_string}"
+    frontend_url = f"{frontend_base}/login?{query_string}"
     
     from fastapi.responses import RedirectResponse
     return RedirectResponse(url=frontend_url)

@@ -22,8 +22,8 @@ is_secure = domain.startswith("https")
 
 app.add_middleware(
     SessionMiddleware, 
-    secret_key=os.getenv("SECRET_KEY", "some-random-string"),
-    https_only=is_secure,
+    secret_key=os.getenv("SECRET_KEY", "secure-chat-fixed-secret-key-12345"), # Fixed fallback key
+    https_only=False, # Relax security for local/IP dev
     same_site="lax"
 )
 

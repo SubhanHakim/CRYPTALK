@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import dexScreenerIcon from '../../assets/dexscreener.svg';
 
 export default function HeroSection() {
     const navigate = useNavigate();
@@ -51,7 +52,7 @@ export default function HeroSection() {
                             className="p-4 bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 rounded-lg text-white transition-all group"
                             title="View on DexScreener"
                         >
-                           <img src="/src/assets/dexscreener.svg" alt="DexScreener" className="w-6 h-6 group-hover:scale-110 transition-transform opacity-90 group-hover:opacity-100" />
+                           <img src={dexScreenerIcon} alt="DexScreener" className="w-6 h-6 group-hover:scale-110 transition-transform opacity-90 group-hover:opacity-100" />
                         </a>
                     </div>
                 </div>

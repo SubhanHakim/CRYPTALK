@@ -45,7 +45,7 @@ export default function HeroSection() {
 
                         {/* DexScreener Button */}
                         <a 
-                            href="#" 
+                            href="https://pump.fun/coin/Ay7q2nqEraacoUPA8nqa5JtRpQEFrsA6oyU9GnFDpump" 
                             target="_blank" 
                             rel="noopener noreferrer"
                             className="p-4 bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 rounded-lg text-white transition-all group"

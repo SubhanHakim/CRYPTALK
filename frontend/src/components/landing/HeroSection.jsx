@@ -21,13 +21,39 @@ export default function HeroSection() {
                     No trackers. No logs. No middleman. Just you and the person you trust, connected by military-grade AES-256 encryption.
                 </p>
 
-                <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex flex-col sm:flex-row gap-4 items-center">
                     <button 
                         onClick={() => navigate('/login')} 
-                        className="px-8 py-4 bg-[#6E62E5] hover:bg-[#5b50bf] text-white rounded-lg font-semibold text-lg transition-all shadow-lg shadow-[#6E62E5]/20"
+                        className="px-8 py-4 bg-[#6E62E5] hover:bg-[#5b50bf] text-white rounded-lg font-semibold text-lg transition-all shadow-lg shadow-[#6E62E5]/20 flex-shrink-0"
                     >
                         Start Encrypted Chat
                     </button>
+                    
+                    <div className="flex gap-3">
+                        {/* Twitter / X Button */}
+                        <a 
+                            href="https://x.com/SecureCryptalk" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="p-4 bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 rounded-lg text-white transition-all group"
+                            title="Follow on X"
+                        >
+                            <svg className="w-6 h-6 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
+                            </svg>
+                        </a>
+
+                        {/* DexScreener Button */}
+                        <a 
+                            href="https://dexscreener.com/solana/4kdy44ra1c3r3b9w3p64r5w7y6z8x9q2" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="p-4 bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 rounded-lg text-white transition-all group"
+                            title="View on DexScreener"
+                        >
+                           <img src="/src/assets/dexscreener.svg" alt="DexScreener" className="w-6 h-6 group-hover:scale-110 transition-transform opacity-90 group-hover:opacity-100" />
+                        </a>
+                    </div>
                 </div>
 
                 <div className="mt-12 flex items-center gap-6 text-sm text-gray-500 font-mono">

@@ -465,18 +465,25 @@ export default function Chat() {
                 {/* Chat List */}
                 <div className="flex-1 overflow-y-auto custom-scrollbar p-3 space-y-2">
                     {/* Actions */}
-                    <div className="grid grid-cols-2 gap-2 mb-4">
-                        <button onClick={handleAddContact} className="bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/20 p-3 rounded-xl flex flex-col items-center justify-center gap-2 transition-all group">
-                            <div className="w-8 h-8 rounded-full bg-[#6E62E5]/10 text-[#6E62E5] flex items-center justify-center group-hover:scale-110 transition-transform">
-                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
-                            </div>
-                            <span className="text-[10px] font-medium text-gray-400">New Chat</span>
+                    {/* Actions: Modern Grid */}
+                    <div className="grid grid-cols-2 gap-3 mb-6">
+                        <button onClick={handleAddContact} className="relative group overflow-hidden p-4 rounded-2xl bg-white/5 border border-white/5 hover:border-[#6E62E5]/50 transition-all duration-300">
+                             <div className="absolute inset-0 bg-gradient-to-br from-[#6E62E5]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                             <div className="relative flex flex-col items-center gap-2">
+                                <div className="w-10 h-10 rounded-full bg-[#6E62E5]/20 text-[#6E62E5] flex items-center justify-center group-hover:scale-110 group-hover:bg-[#6E62E5] group-hover:text-white transition-all duration-300 shadow-lg shadow-[#6E62E5]/10">
+                                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
+                                </div>
+                                <span className="text-xs font-semibold text-gray-300 group-hover:text-white">New Chat</span>
+                             </div>
                         </button>
-                        <button onClick={handleCreateGroup} className="bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/20 p-3 rounded-xl flex flex-col items-center justify-center gap-2 transition-all group">
-                             <div className="w-8 h-8 rounded-full bg-purple-500/10 text-purple-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
-                            </div>
-                            <span className="text-[10px] font-medium text-gray-400">New Group</span>
+                        <button onClick={handleCreateGroup} className="relative group overflow-hidden p-4 rounded-2xl bg-white/5 border border-white/5 hover:border-purple-500/50 transition-all duration-300">
+                             <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                             <div className="relative flex flex-col items-center gap-2">
+                                <div className="w-10 h-10 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center group-hover:scale-110 group-hover:bg-purple-500 group-hover:text-white transition-all duration-300 shadow-lg shadow-purple-500/10">
+                                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                                </div>
+                                <span className="text-xs font-semibold text-gray-300 group-hover:text-white">New Group</span>
+                             </div>
                         </button>
                     </div>
 
@@ -485,10 +492,10 @@ export default function Chat() {
                             <div
                                 key={getChatKey(c)}
                                 onClick={() => openChat(c)}
-                                className={`group p-3 rounded-xl cursor-pointer transition-all flex items-center gap-3 border border-transparent
+                                className={`group p-3 rounded-xl cursor-pointer transition-all flex items-center gap-4 border overflow-hidden relative
                                     ${activeChat?.id === c.id && activeChat?.type === c.type
-                                        ? 'bg-[#6E62E5]/10 border-[#6E62E5]/20'
-                                        : 'hover:bg-white/5 hover:border-white/5'
+                                        ? 'bg-[#6E62E5]/10 border-[#6E62E5]/30 shadow-[0_0_15px_rgba(110,98,229,0.15)]'
+                                        : 'bg-transparent border-transparent hover:bg-white/5 hover:border-white/5'
                                     }`}
                             >
                                 <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white shadow-inner relative
@@ -569,10 +576,10 @@ export default function Chat() {
                                                 <span className="text-[10px] font-mono text-gray-500 mb-1 ml-1">{m.sender}</span>
                                             )}
 
-                                            <div className={`p-4 rounded-2xl shadow-sm backdrop-blur-sm border
+                                            <div className={`p-4 rounded-3xl shadow-md backdrop-blur-md border relative overflow-hidden transition-all duration-200
                                                 ${m.isMine
-                                                    ? 'bg-[#6E62E5] text-white rounded-br-none border-[#6E62E5]'
-                                                    : 'bg-[#111] text-gray-200 rounded-bl-none border-white/10'}`}>
+                                                    ? 'bg-gradient-to-br from-[#6E62E5] to-[#5b50bf] text-white rounded-br-sm border-[#6E62E5]/50'
+                                                    : 'bg-white/5 text-gray-100 rounded-bl-sm border-white/10 hover:bg-white/10'}`}>
 
                                                 {m.isFile ? (
                                                     <div className="space-y-3">
@@ -623,33 +630,45 @@ export default function Chat() {
                         </div>
 
                         {/* Input Area */}
-                        <div className="p-4 bg-transparent pb-6 sticky bottom-0 z-20">
-                             <div className="flex items-end gap-3 max-w-4xl mx-auto bg-[#111111] border border-white/10 p-2 rounded-3xl shadow-2xl backdrop-blur-xl">
+                        <div className="p-4 md:p-6 bg-gradient-to-t from-[#050505] via-[#050505]/95 to-transparent pb-6 sticky bottom-0 z-20">
+                             <div className="flex items-end gap-2 md:gap-4 max-w-4xl mx-auto">
                                 <input type="file" ref={fileInputRef} className="hidden" onChange={handleFileUpload} />
-                                <button onClick={() => fileInputRef.current.click()} className="p-3 text-gray-400 hover:text-white hover:bg-white/10 rounded-full transition-colors flex-shrink-0">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                
+                                {/* File Button */}
+                                <button 
+                                    onClick={() => fileInputRef.current.click()} 
+                                    className="p-3.5 mb-0.5 rounded-full bg-[#1A1A1A] border border-white/10 text-gray-400 hover:text-white hover:bg-white/10 hover:scale-110 active:scale-95 transition-all shadow-lg flex-shrink-0 group"
+                                    title="Send File"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 group-hover:rotate-12 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
                                     </svg>
                                 </button>
                                 
-                                <div className="flex-1 py-2">
-                                     <input
+                                {/* Text Input */}
+                                <div className="flex-1 bg-[#0A0A0A]/80 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl focus-within:border-[#6E62E5]/50 focus-within:ring-2 focus-within:ring-[#6E62E5]/20 transition-all duration-300 relative overflow-hidden">
+                                    <input
                                         type="text"
-                                        className="w-full bg-transparent text-white border-none focus:ring-0 placeholder-gray-600 text-sm font-sans"
+                                        className="w-full bg-transparent text-white border-none focus:ring-0 placeholder-gray-500 text-sm md:text-base font-sans py-4 px-5"
                                         placeholder="Type an encrypted message..."
                                         value={input}
                                         onChange={(e) => setInput(e.target.value)}
                                         onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
                                     />
+                                    {/* Subtle internal glow */}
+                                    <div className="absolute inset-0 pointer-events-none bg-gradient-to-r from-[#6E62E5]/5 via-transparent to-transparent opacity-0 focus-within:opacity-100 transition-opacity"></div>
                                 </div>
 
+                                {/* Send Button */}
                                 <button
                                     onClick={sendMessage}
                                     disabled={!input.trim()}
-                                    className={`p-3 rounded-full transition-all duration-200 transform hover:scale-105 active:scale-95 flex-shrink-0
-                                        ${input.trim() ? 'bg-[#6E62E5] text-white shadow-lg shadow-[#6E62E5]/30' : 'bg-white/5 text-gray-600 cursor-not-allowed'}`}
+                                    className={`p-3.5 mb-0.5 rounded-full transition-all duration-300 shadow-xl flex-shrink-0
+                                        ${input.trim() 
+                                            ? 'bg-gradient-to-r from-[#6E62E5] to-[#5b50bf] text-white hover:scale-110 hover:shadow-[#6E62E5]/40 active:scale-95' 
+                                            : 'bg-[#1A1A1A] border border-white/5 text-gray-600 cursor-not-allowed'}`}
                                 >
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 ${input.trim() ? '-rotate-45' : ''} transition-transform duration-300`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                                     </svg>
                                 </button>

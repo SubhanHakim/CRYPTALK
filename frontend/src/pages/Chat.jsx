@@ -421,8 +421,7 @@ export default function Chat() {
              <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none z-0"></div>
              
             {/* Sidebar (List View) */}
-            <div className={`flex-col h-full bg-[#050505]/80 backdrop-blur-xl border-r border-white/5 relative z-10
-                ${activeChat ? 'hidden md:flex' : 'flex'} w-full md:w-80 lg:w-96 transition-all duration-300`}>
+            <div className="flex flex-col h-full bg-[#050505]/80 backdrop-blur-xl border-r border-white/5 relative z-10 w-full md:w-80 lg:w-96 transition-all duration-300">
 
                 {/* Header */}
                 <div className="p-5 border-b border-white/5">
@@ -523,8 +522,16 @@ export default function Chat() {
             </div>
 
             {/* Chat View (Detail View) */}
-            <div className={`flex-col h-full relative flex-1 bg-transparent z-10
-                ${!activeChat ? 'hidden md:flex' : 'flex'} w-full`}>
+            <div className={`flex-col h-full z-20 
+                ${activeChat 
+                    ? 'fixed inset-0 z-50 flex w-full bg-[#050505] md:static md:bg-transparent md:flex-1' 
+                    : 'hidden md:flex md:static md:flex-1 md:bg-transparent'}
+                `}>
+                
+                {/* Mobile Background Grid (Only visible on mobile active) */}
+                {activeChat && (
+                    <div className="absolute inset-0 md:hidden bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none z-0"></div>
+                )}
 
                 {!activeChat ? (
                     <div className="flex-1 flex flex-col items-center justify-center text-gray-500 p-4 text-center">

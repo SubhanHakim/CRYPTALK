@@ -32,7 +32,7 @@ export default function HeroSection() {
                     <div className="flex gap-3">
                         {/* Twitter / X Button */}
                         <a 
-                            href="https://x.com/SecureCryptalk" 
+                            href="https://x.com/cryptalk_chat" 
                             target="_blank" 
                             rel="noopener noreferrer"
                             className="p-4 bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 rounded-lg text-white transition-all group"
@@ -45,7 +45,7 @@ export default function HeroSection() {
 
                         {/* DexScreener Button */}
                         <a 
-                            href="https://dexscreener.com/solana/4kdy44ra1c3r3b9w3p64r5w7y6z8x9q2" 
+                            href="#" 
                             target="_blank" 
                             rel="noopener noreferrer"
                             className="p-4 bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 rounded-lg text-white transition-all group"
